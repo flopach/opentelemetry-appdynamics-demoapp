@@ -20,15 +20,19 @@ processors:
       value: 443
     - key: service.namespace
       action: upsert
-      value: "astronomyshop"
+      value: "weatherapp"
   batch:
     timeout: 60s
     send_batch_size: 10
 
 exporters:
   otlphttp:
-    endpoint: "https://pdx-sls-agent-api.saas.appdynamics.com"
-    headers: {"x-api-key": "mykey"}
+    endpoint: "https://fra-sls-agent-api.saas.appdynamics.com"
+    headers: {"x-api-key": "9ce1168b2c7aad754362fd8a1b3fcc0fa640477913b7b02a86a03aea243da29e"}
+  jaeger:
+    endpoint: "jaeger:14250"
+    tls:
+      insecure: true
   logging:
     loglevel: debug
 
@@ -37,7 +41,7 @@ service:
     traces:
       receivers: [otlp]
       processors: [resource, batch]
-      exporters: [otlphttp]
+      exporters: [otlphttp,logging,jaeger]
   telemetry:
     logs:
       level: "DEBUG"

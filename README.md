@@ -1,47 +1,28 @@
 # opentelemetry-appdynamics-demoapp
 
-work in progress!
+This a sample weather app provides more insight into leveraging Open Telemetry (Otel).
 
-Simple app to show the power of opentelemetry + appdynamics.
+Components:
 
-## Configure Otel Collector
+* Flask Server - Otel auto instrumented
+* Flask Server - Otel manual insutrumented
+* Client - Requesting data from the servers above
+* Jaeger
+* Otel Collector
 
-1. Insert API key in the config.
+## Configuration
 
-2. Run:
+1. Clone this repository.
 
-```
-docker run -p 4317:4317 \
-    -v $(pwd)/otelcollector/otelcollector-config.yaml:/etc/otelcollector-config.yaml \
-    otel/opentelemetry-collector:latest \
-    --config=/etc/otelcollector-config.yaml
-```
+2. Insert your AppDynamics configuration (API keys, account, host, port) in the file ´otel-collector-config.yaml´
 
-## Install + Configure Python App
+3. Change the Docker base layers to x86/ARM plaform
 
-Install dependencies, run flask app:
+4. Run: `docker-compose up`
 
-```
-pip install -r requirements.txt
-flask run
-```
+## Use:
 
-Open another terminal, run client:
+* Flask Server auto: [](http://localhost:8000)
+* Flask Server manual: [](http://localhost:8001)
+* Jaeger Interface: [](http://localhost:16686)
 
-```
-python client.py
-```
-
-## Optional: Run with Jaeger
-
-1. Disable Otel collector
-2. Run jaeger all in one:
-
-```
-docker run --name jaeger \
-  -e COLLECTOR_OTLP_ENABLED=true \
-  -p 16686:16686 \
-  -p 4317:4317 \
-  -p 4318:4318 \
-  jaegertracing/all-in-one:latest
-```
